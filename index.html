@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stock Simulator</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+
+<body>
+    <h1>Stock Market Simulator</h1>
+    <p>
+        This app gives simulated stock market experience. Create your own stock portfolio by purchasing & selling the
+        stocks!<br>
+        The data on this app is NOT relevant to real stock market.<br>
+        Stock prices fluctuate at every 3 seconds.<br>
+        Be aware: Your portfolio will be lost and start from the beginning if you re-fresh the page (F5 key).
+    </p>
+    <div>
+        <h2>Stock Market</h2>
+        <div>
+            <h3 id="stock_name"></h3>
+            <h4 style="display: inline;" id="stock_price"></h4><span style="display: inline;"> per share</span>
+            <p>Real-Time Price As of <span class="date"></span></p>
+            <ul>
+                <li class="stock_symbol">Stock Symbol: </li>
+                <li class="stock_market">Stock Market: </li>
+                <li class="stock_sector">Stock Sector: </li>
+                <li class="stock_industry">Stock Industry: </li>
+                <li class="stock_market_cap">Stock Market Cap: </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+
+        // var stockData = '{"stock_name":"Southwestern Energy Company","stock_symbol":"SWNC","stock_market":"NYSE","stock_sector":"Energy","stock_industry":"Oil & Gas Production","stock_market_cap":"n/a"}';
+        // var stock = JSON.parse(stockData);
+
+        // $(document).ready(function(e){
+        // var stock;
+        //     $.getJSON('mock_data.json', function(json) {
+        //         stock = json;
+        //     });
+        // });
+
+        // let request = new XMLHttpRequest();
+        // request.open('GET', 'stock_mock_data/mock_data.json');
+        // request.responseType = 'json';
+        // request.send();
+        // var json = request.response.getContentText();
+        // var stock = JSON.parse(json);
+
+        var stock;
+        let url = 'stock_mock_data/mock_data.json';
+        let request = new XMLHttpRequest();
+        request.open('GET', url);
+        request.responseType = 'json';
+        request.send();
+        request.onload = function jsonLoad() {
+            stock = request.response;
+        }
+
+        document.getElementById('stock_name').innerHTML = stock[0].stock_name;
+
+        var stockPrice = document.getElementById('stock_price');
+        stockPrice.addEventListener('load', updatePrice());
+        function updatePrice() {
+            function randomStockPrice() {
+                var randomN = (Math.random() * 40).toFixed(2);
+                stockPrice.innerText = randomN;
+            }
+            randomStockPrice();
+            setInterval(randomStockPrice, 3000);
+        }
+
+        $(document).ready(function (e) {
+            function theTime() {
+                var today = new Date();
+                var formattedDate = today.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                var time = today.toLocaleTimeString('en-US');
+                $('.date').html(formattedDate + '/ ' + time);
+            }
+            theTime();
+            setInterval(theTime, 500)
+        });
+
+
+    </script>
+</body>
+
+</html>
