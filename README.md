@@ -1,0 +1,2 @@
+# stockSimulator
+Simulating Stock Market
